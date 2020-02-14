@@ -1,5 +1,7 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,24 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//public static String generate(final String phrase) {
+		    StringBuilder bd = new StringBuilder();
+		    char currentChar = phrase.charAt(0);
+		    bd.append(currentChar);
+		    for (int i = 1; i < phrase.length(); i++) {
+		        char nextChar = phrase.charAt(i);
+		        if (isNextCharacterAnAcronymCharacter(currentChar, nextChar)) {
+		            bd.append(nextChar);
+		        }
+		        currentChar = nextChar;
+		    }
+		    return bd.toString().toUpperCase();
+	}
+		    boolean isNextCharacterAnAcronymCharacter(final char currentChar, final char nextChar) {
+		        return (!Character.isAlphabetic(currentChar) && Character.isAlphabetic(nextChar)) ||
+		               (Character.isLowerCase(currentChar) && Character.isUpperCase(nextChar));
+
 	}
 
 	/**
@@ -85,17 +104,45 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean status=true;
+			sideOne = getSideOne();
+			sideTwo = getSideTwo();
+			sideThree = getSideThree();
+			
+			if (sideOne==sideTwo && sideTwo == sideThree  ) {
+			
+			status=true;
+		}
+			return status;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean status=true;
+			sideOne = getSideOne();
+			sideTwo = getSideTwo();
+			sideThree = getSideThree();
+			
+			if (sideOne==sideTwo || sideTwo == sideThree || sideOne== sideThree) {
+				
+				status=true;
+			}
+			
+			return status;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean status=true;
+			sideOne = getSideOne();
+			sideTwo = getSideTwo();
+			sideThree = getSideThree();
+            
+			if (sideOne!=sideTwo || sideTwo != sideThree || sideOne!= sideThree) {
+				
+				status=true;
+			}
+			return status;
 		}
 
 	}
@@ -117,9 +164,51 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+        String str;
+		
+		str = string.toUpperCase();
+		
+		char[] aWord = str.toCharArray();
+		
+		int score = 0;
+		 
 
+		for ( Character letter : aWord) {
+		      score += getValueLetter(letter);
+		        }
+		
+		
+	return score;	
+	            }
+		  
+		 
+	public static int getValueLetter(char letter){
+		        switch (letter){
+		            case 'G':
+		            case 'D': return 2;
+
+		            case 'B':
+		            case 'C':
+		            case 'M':
+		            case 'P': return 3;
+
+		            case 'F':
+		            case 'H':
+		            case 'V':
+		            case 'W':
+		            case 'Y': return 4;
+
+		            case 'K': return 5;
+
+		            case 'J':
+		            case 'X': return 8;
+
+		            case 'Q':
+		            case 'Z': return 10;
+
+		            default: return 1;
+		        }
+		    }		 
 	/**
 	 * 5. Clean up user-entered phone numbers so that they can be sent SMS messages.
 	 * 
@@ -340,8 +429,25 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+		int prime,c,k; 
+		prime=1;
+		c=0;
+		
+		while (c < i)
+		     {
+		      prime=prime+1;
+		      for (k = 2; k <= prime; k++){ 
+		        if (prime % k == 0) {
+		          break;
+		        }
+		      }
+		      
+		      if ( k == prime){
+		          c = c+1;
+		}
+}
+		return prime;
+}
 
 	/**
 	 * 13 & 14. Create an implementation of the atbash cipher, an ancient encryption
@@ -377,7 +483,23 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			String str = string.toLowerCase();
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < str.length(); i++) {
+				Character c = str.charAt(i);
+				if (!Character.isDigit(c) && !Character.isLetter(c)) {
+					continue;
+				}
+				if (Character.isLetter(c)) {
+					sb.append((char) ('a' + ('z' - c)));
+				}
+				if (Character.isDigit(c)) {
+					sb.append(c);
+				}
+			}
+
+			return sb.toString();
 		}
 
 		/**
@@ -388,10 +510,30 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
-		}
-	}
+			String str = string.toLowerCase();
 
+			int count = 0;
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < str.length(); i++) {
+				Character c = str.charAt(i);
+				if (!Character.isDigit(c) && !Character.isLetter(c)) {
+					continue;
+				}
+				if (count == 5) {
+					sb.append(" ");
+					count = 0;
+				}
+				if (Character.isLetter(c)) {
+					sb.append((char) ('a' + ('z' - c)));
+				}
+				if (Character.isDigit(c)) {
+					sb.append(c);
+				}
+				count++;
+
+			}
+			return sb.toString();
+		}
 	/**
 	 * 15. The ISBN-10 verification process is used to validate book identification
 	 * numbers. These normally contain dashes and look like: 3-598-21508-8
@@ -416,7 +558,44 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		String sTV=string;
+		int value = 0;
+		int position = 10;
+		for (int i = 0; i < sTV.length(); i++) {
+			// return false if there are more than 10 ISBN digits
+			if (position < 1) {
+				return false;
+			}
+			char valueAtI = sTV.charAt(i);
+			if  (valueAtI != '-') {
+				int isbnDigit = 0;
+				try {
+					isbnDigit = getISBNDigit(valueAtI);
+				}
+				catch(IllegalArgumentException e) {
+					// Non-numeric character other than X encountered.  Validation should fail.
+					return false;
+				}
+				// X can only appear in the last position as a check character
+				if (isbnDigit == 10 && position > 1) {
+					return false;
+				}
+				value += isbnDigit * (position--);
+			}
+		}
+		return value % 11 == 0;
+	}
+	
+	private int getISBNDigit(char value) throws IllegalArgumentException {
+		if (value == 'X') {
+			return 10;
+		}
+		else if (Character.isDigit(value)){
+			return Character.getNumericValue(value);
+		}
+		else {
+			throw new IllegalArgumentException("All characters in the string other than digits and X should fail validation");
+		}
 	}
 
 	/**
@@ -434,7 +613,40 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+        boolean[] mark = new boolean[26]; 
+        String str=string;
+        
+        // For indexing in mark[] 
+        int index = 0; 
+  
+        // Traverse all characters 
+        for (int i = 0; i < str.length(); i++) 
+        { 
+            // If uppercase character, subtract 'A' 
+            // to find index. 
+            if ('A' <= str.charAt(i) &&  
+                    str.charAt(i) <= 'Z') 
+                          
+                index = str.charAt(i) - 'A'; 
+  
+                // If lowercase character, subtract 'a' 
+                // to find index. 
+            else if('a' <= str.charAt(i) &&  
+                        str.charAt(i) <= 'z') 
+                              
+                index = str.charAt(i) - 'a'; 
+  
+            // Mark current character 
+            mark[index] = true; 
+        } 
+  
+        // Return false if any character is unmarked 
+        for (int i = 0; i <= 25; i++) 
+            if (mark[i] == false) 
+                return (false); 
+  
+        // If all characters were present 
+        return (true);
 	}
 
 	/**
@@ -447,7 +659,23 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		LocalDateTime startDate;
+		LocalDateTime enddate = null;
+		
+		if (given instanceof LocalDate) {
+			startDate = (LocalDateTime)given;
+			enddate = startDate.plusSeconds(1_000_000_000);
+		
+		}
+		
+		if (given instanceof LocalDateTime) {
+			startDate = (LocalDateTime)given;
+			enddate = startDate.plusSeconds(1_000_000_000);
+		
+		}
+		return enddate;
+		
+		
 	}
 
 	/**
@@ -465,6 +693,8 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
+		
+		
 		return 0;
 	}
 
@@ -506,9 +736,26 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
-	}
+		int nDigits = string.length(); 
+		  
+	    int nSum = 0; 
+	    boolean isSecond = false; 
+	    for (int i = nDigits - 1; i >= 0; i--)  
+	    { 
+	  
+	        int d = string.charAt(i) - '0'; 
+	  
+	        if (isSecond == true) 
+	             d = d * 2;  
+	        nSum += d / 10; 
+	        nSum += d % 10; 
+	  
+	        isSecond = !isSecond; 
+	    } 
+	    return (nSum % 10 == 0); 
+	} 
 
+	
 	/**
 	 * 20. Parse and evaluate simple math word problems returning the answer as an
 	 * integer.
@@ -538,7 +785,8 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+	   
+	        return 0;
+	    }
 	}
-
-}
+	}
